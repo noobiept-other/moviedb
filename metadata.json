@@ -1,0 +1,6 @@
+{
+  "name": "moviedb",
+  "identifier": "com.domain.app.moviedb",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
