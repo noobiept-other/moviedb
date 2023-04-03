@@ -17,11 +17,10 @@
  * limitations under the License.
  */
 
-import { Lightning, Utils, Router } from "@lightningjs/sdk";
-import { getUpcomingMovies } from "./lib/api";
+import { Utils, Router } from "@lightningjs/sdk";
 import { ROUTES } from "./lib/routes";
 
-export default class App extends Lightning.Component {
+export default class App extends Router.App {
     static getFonts() {
         return [
             { family: "Regular", url: Utils.asset("fonts/Roboto-Regular.ttf") },
@@ -36,10 +35,5 @@ export default class App extends Lightning.Component {
         return {
             ...super._template(),
         };
-    }
-
-    async _init() {
-        const movies = await getUpcomingMovies();
-        console.log(movies);
     }
 }
