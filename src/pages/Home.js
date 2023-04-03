@@ -1,4 +1,4 @@
-import { Lightning } from "@lightningjs/sdk";
+import { Lightning, Router } from "@lightningjs/sdk";
 import { getUpcomingMovies } from "../lib/api";
 import { Movie } from "../components/Movie";
 
@@ -41,6 +41,7 @@ export class Home extends Lightning.Component {
         const elements = data.results.map((el) => ({
             type: Movie,
             logo: `https://image.tmdb.org/t/p/w300${el.poster_path}`,
+            movieID: el.id,
         }));
 
         const movies = this.tag("Movies");
@@ -51,6 +52,11 @@ export class Home extends Lightning.Component {
 
     pageTransition() {
         return "fade";
+    }
+
+    _handleEnter() {
+        const selected = this.tag("Movies").children[this.index];
+        Router.navigate(`info/${selected.movieID}`);
     }
 
     _handleLeft() {
