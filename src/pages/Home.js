@@ -14,13 +14,14 @@ export class Home extends Lightning.Component {
                 w: 1920,
                 h: 1080,
                 color: 0xff808080,
+                shader: { type: Lightning.shaders.Dithering, graining: 0.3 },
             },
             Title: {
                 x: 960,
                 y: 100,
                 mount: 0.5,
                 text: {
-                    text: "Upcoming Movies",
+                    text: "",
                     fontSize: 64,
                 },
             },
@@ -42,6 +43,8 @@ export class Home extends Lightning.Component {
             type: Movie,
             logo: `https://image.tmdb.org/t/p/w300${el.poster_path}`,
             movieID: el.id,
+            title: el.title,
+            backdrop: el.backdrop_path,
         }));
 
         const movies = this.tag("Movies");
@@ -75,7 +78,15 @@ export class Home extends Lightning.Component {
     }
 
     _getFocused() {
-        return this.tag("Movies").children[this.index];
+        const movie = this.tag("Movies").children[this.index];
+        this.tag("Title").patch({
+            text: { text: movie.title },
+        });
+        this.tag("Background").patch({
+            src: `https://image.tmdb.org/t/p/w500${movie.backdrop}`,
+        });
+
+        return movie;
     }
 
     _handleRight() {

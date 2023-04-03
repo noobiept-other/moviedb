@@ -9,6 +9,7 @@ export class Info extends Lightning.Component {
                 w: 1920,
                 h: 1080,
                 color: 0xff808080,
+                shader: { type: Lightning.shaders.Dithering, graining: 0.3 },
             },
             Title: {
                 x: 960,
@@ -56,6 +57,9 @@ export class Info extends Lightning.Component {
     async loadMovieInfo(id) {
         const info = await getMovieInfo(id);
 
+        this.tag("Background").patch({
+            src: `https://image.tmdb.org/t/p/w500${info.backdrop_path}`,
+        });
         this.tag("Title").patch({
             text: {
                 text: info.title,
@@ -80,7 +84,7 @@ export class Info extends Lightning.Component {
         const info = await getMovieRecommendations(id);
 
         this.tag("Recommendations").patch({
-            children: info.results.slice(0, 10).map((el) => ({
+            children: info.results.slice(0, 8).map((el) => ({
                 src: `https://image.tmdb.org/t/p/w200${el.poster_path}`,
                 w: 120,
                 h: 180,
@@ -89,6 +93,9 @@ export class Info extends Lightning.Component {
     }
 
     _disable() {
+        this.tag("Background").patch({
+            src: undefined,
+        });
         this.tag("Title").patch({
             text: {
                 text: "Loading...",
