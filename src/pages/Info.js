@@ -1,5 +1,5 @@
 import { Lightning, Router } from "@lightningjs/sdk";
-import { getMovieInfo } from "../lib/api";
+import { getMovieInfo, getMovieRecommendations } from "../lib/api";
 
 export class Info extends Lightning.Component {
     static _template() {
@@ -12,7 +12,7 @@ export class Info extends Lightning.Component {
             },
             Title: {
                 x: 960,
-                y: 100,
+                y: 50,
                 mount: 0.5,
                 text: {
                     text: "Loading...",
@@ -21,12 +21,12 @@ export class Info extends Lightning.Component {
             },
             Logo: {
                 x: 960,
-                y: 540,
+                y: 400,
                 mount: 0.5,
             },
             Plot: {
                 x: 960,
-                y: 950,
+                y: 780,
                 w: 1800,
                 mount: 0.5,
                 text: {
@@ -40,12 +40,21 @@ export class Info extends Lightning.Component {
                     text: "",
                 },
             },
+            Recommendations: {
+                x: 960,
+                y: 970,
+                w: 1200,
+                mount: 0.5,
+                flex: {
+                    direction: "row",
+                    justifyContent: "space-around",
+                },
+            },
         };
     }
 
     async loadMovieInfo(id) {
         const info = await getMovieInfo(id);
-        console.log(info);
 
         this.tag("Title").patch({
             text: {
@@ -64,6 +73,18 @@ export class Info extends Lightning.Component {
             text: {
                 text: info.release_date,
             },
+        });
+    }
+
+    async loadMovieRecommendations(id) {
+        const info = await getMovieRecommendations(id);
+
+        this.tag("Recommendations").patch({
+            children: info.results.slice(0, 10).map((el) => ({
+                src: `https://image.tmdb.org/t/p/w200${el.poster_path}`,
+                w: 120,
+                h: 180,
+            })),
         });
     }
 
@@ -90,6 +111,7 @@ export class Info extends Lightning.Component {
 
     set params(args) {
         this.loadMovieInfo(args.movieID);
+        this.loadMovieRecommendations(args.movieID);
     }
 
     _handleBack() {
