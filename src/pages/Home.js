@@ -5,6 +5,8 @@ import { Movie } from "../components/Movie";
 export class Home extends Lightning.Component {
     index = 0;
 
+    static initialMoviesX = 960 - 200;
+
     static _template() {
         return {
             Background: {
@@ -23,7 +25,7 @@ export class Home extends Lightning.Component {
                 },
             },
             Movies: {
-                x: 960,
+                x: Home.initialMoviesX,
                 y: 540,
                 mountY: 0.5,
                 flex: {
@@ -61,7 +63,7 @@ export class Home extends Lightning.Component {
         const movies = this.tag("Movies");
         movies.patch({
             smooth: {
-                x: [movies.x + 400, { duration: 0.5 }],
+                x: [Home.initialMoviesX - this.index * 400, { duration: 0.5 }],
             },
         });
     }
@@ -81,7 +83,7 @@ export class Home extends Lightning.Component {
 
         movies.patch({
             smooth: {
-                x: [movies.x - 400, { duration: 0.5 }],
+                x: [Home.initialMoviesX - this.index * 400, { duration: 0.5 }],
             },
         });
     }
