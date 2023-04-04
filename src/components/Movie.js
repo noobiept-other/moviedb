@@ -1,4 +1,4 @@
-import { Lightning } from "@lightningjs/sdk";
+import { Lightning, Utils } from "@lightningjs/sdk";
 
 export class Movie extends Lightning.Component {
     static _template() {
@@ -9,11 +9,20 @@ export class Movie extends Lightning.Component {
             Logo: {
                 src: this.bindProp("logo"),
             },
+            Favourite: {
+                x: 290,
+                y: 10,
+                w: 50,
+                h: 50,
+                mount: 0.5,
+                visible: false,
+                src: Utils.asset("images/favourite.png"),
+            },
         };
     }
 
     _focus() {
-        this.tag("Logo").patch({
+        this.patch({
             smooth: {
                 scale: 1.5,
             },
@@ -21,7 +30,7 @@ export class Movie extends Lightning.Component {
     }
 
     _unfocus() {
-        this.tag("Logo").patch({
+        this.patch({
             smooth: {
                 scale: 1,
             },

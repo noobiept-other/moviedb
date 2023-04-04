@@ -1,4 +1,4 @@
-import { Lightning, Router } from "@lightningjs/sdk";
+import { Lightning, Router, Utils } from "@lightningjs/sdk";
 import { getUpcomingMovies } from "../lib/api";
 import { Movie } from "../components/Movie";
 
@@ -60,6 +60,17 @@ export class Home extends Lightning.Component {
     _handleEnter() {
         const selected = this.tag("Movies").children[this.index];
         Router.navigate(`info/${selected.movieID}`);
+    }
+
+    _handleDown() {
+        const movie = this.tag("Movies").children[this.index];
+        movie.favourite = !Boolean(movie.favourite);
+
+        movie.patch({
+            Favourite: {
+                visible: movie.favourite,
+            },
+        });
     }
 
     _handleLeft() {
